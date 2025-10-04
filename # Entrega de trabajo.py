@@ -1,6 +1,7 @@
 # Entrega de trabajo
 
-import time
+import time, random
+from funciones import *
 
 
 
@@ -21,34 +22,6 @@ menu_opciones = print(
     "\n 10 Evaluador de Implicaciones y Contrarreciprocas"
 
     )
-
-
-
-
-def tabla_de_verdad(funcion, resultado, resultado1, resultado2, resultado3):
-    # fuerza 0/1 si vienen True/False
-    r1 = int(resultado)
-    r2 = int(resultado1)
-    r3 = int(resultado2)
-    r4 = int(resultado3)
-
-    tabla = (
-        "-------------------------------\n"
-        f"|    p    |    q    | {funcion} |\n"
-        "|------------------------------\n"
-        f"|    0    |    0    |    {r1}    |\n"
-        "|------------------------------\n"
-        f"|    0    |    1    |    {r2}    |\n"
-        "|------------------------------\n"
-        f"|    1    |    0    |    {r3}    |\n"
-        "|------------------------------\n"
-        f"|    1    |    1    |    {r4}    |\n"
-        "-------------------------------"
-    )
-    print(tabla)
-    
-
-
 
 
 
@@ -83,7 +56,7 @@ while True:
         if operador == 1:
 
             resultado = valor1 and valor2
- 
+
             print(f"{valor1} and {valor2} = {resultado}")
 
 
@@ -234,7 +207,7 @@ while True:
             resultado2 = valor1 and not(valor2)
             resultado3 = valor1 and valor2
             funcion = "p and q"
- 
+
             tabla_de_verdad(funcion, resultado, resultado1, resultado2, resultado3)
 
 
@@ -304,20 +277,77 @@ while True:
                 funcion = "-p and -q"
                 tabla_de_verdad(funcion, resultado, resultado1, resultado2, resultado3)
 
-    elif opcion == 5:
-        
-        valor1 = input("Valor 1: Escriba 1 o 0 ----> ")
-        valor2 = input("Valor 2: Escriba 1 o 0 ----> ")
 
+    elif opcion == 5:
+        cal_tabla_verdad()
+        opcion = input("Escriba su opcion (1,2,3,...) -------> ")
 
     elif opcion == 6:
-        pass
+
+        valor1 = int(input("Ingrese el primer número: "))
+        valor2 = int(input("Ingrese el segundo número: "))
+
+        resultado_and = valor1 & valor2
+        and_bin = "0"
+
+        resultado_or = valor1 | valor2
+        or__bin = "0"
+
+        resultado_xor = valor1 ^ valor2
+        xor_bin = "0"
+
+    
+
+        print(f"{valor1} and {valor2} = {resultado_and}   bin: {numero_binario(resultado_and)}")
+        print(f"{valor1} or {valor2}  = {resultado_or}   bin: {numero_binario(resultado_or)}")
+        print(f"{valor1} xor {valor2} = {resultado_xor}   bin: {numero_binario(resultado_xor)}")
+
 
     elif opcion == 7:
-        pass
+        A = int(input("Ingrese el primer bit (0 o 1): "))
+        B = int(input("Ingrese el segundo bit (0 o 1): "))
+
+        # Lógica booleana
+        Suma = (A and not B) or (not A and B)   # XOR implementado sin operador
+        Carry = A and B
+
+        print("Resultado de la suma:")
+        print("Bit de suma (S):", int(Suma))
+        print("Carry (C):", int(Carry))
+
+    elif opcion == 8:
+
+        nmr_random = random.randint(1,31)
+        numero_bin = numero_binario(nmr_random)
+
+        print(numero_bin)
+
+        respuesta = int(input("Coloque el equivalente al numero anterior "))
+
+        if respuesta == nmr_random:
+            print("Respuesta correcta")
+
+        else:
+            print("Respuesta incorrecta")
 
     else:
         break
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
