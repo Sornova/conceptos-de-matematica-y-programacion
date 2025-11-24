@@ -30,7 +30,7 @@ def tabla_de_verdad(funcion, resultado, resultado1, resultado2, resultado3):
 def tabla_de_verdad1(funcion1, resultado, resultado1, resultado2, resultado3, resultado21, resultado22, resultado23, resultado24, funcion2=None):
     
     if funcion2 is None:
-        funcion2 = funcion 
+        funcion2 = funcion1 
 
 
     r1 = int(resultado)
@@ -134,3 +134,121 @@ def numero_binario(nmr):
         result_bin_lst.append(str(resto))
     result_bin_lst.reverse()
     return "".join(result_bin_lst)
+
+
+
+def validar_binario_str(bin_str):
+
+    if not isinstance(bin_str, str) or len(bin_str) == 0:
+        raise ValueError("Entrada inválida: se espera una cadena binaria no vacía (str).")
+    for c in bin_str:
+        if c not in ("0", "1"):
+            raise ValueError("Entrada inválida: la cadena debe contener solo '0' y '1'.")
+        
+
+
+def es_par_binario(bin_str):
+    validar_binario_str(bin_str)
+    ultimo_bit = bin_str[-1]
+    return 1 if ultimo_bit == "0" else 0
+
+def es_impar_binario(bin_str):
+    return 1 - es_par_binario(bin_str)
+
+
+
+def tabla_doble_implicacion():
+    """
+    Genera la tabla de verdad de p <-> q (p si y solo si q)
+    y destaca las filas donde el resultado es verdadero.
+    Además indica si p y q son lógicamente equivalentes (p ≡ q).
+    """
+    print("\n=== Tabla de verdad de p ⇔ q ===")
+    print("--------------------------------------------")
+    print("|  p  |  q  |  p⇔q  |  Marcar (verdadero)  |")
+    print("--------------------------------------------")
+
+    equivalentes = True  # Para ver si p y q tienen siempre el mismo valor
+
+    for p in (0, 1):
+        for q in (0, 1):
+            p_bool = bool(p)
+            q_bool = bool(q)
+
+            # p ⇔ q es verdadero cuando ambos tienen el mismo valor
+            eq_bool = (p_bool and q_bool) or ((not p_bool) and (not q_bool))
+            eq = int(eq_bool)
+
+            # Para equivalencia lógica, p y q deberían coincidir SIEMPRE
+            if p != q:
+                equivalentes = False
+
+            marca = "*" if eq == 1 else ""
+            print(f"|  {p}  |  {q}  |   {eq}   |        {marca:2}              |")
+
+    print("--------------------------------------------")
+
+    if equivalentes:
+        print("Conclusión: p y q son equivalentes lógicas (p ≡ q).")
+    else:
+        print("Conclusión: p y q NO son equivalentes lógicas (hay filas donde difieren).")
+
+
+
+
+def clasificar_proposicion_compuesta():
+    """
+    Permite elegir una proposición compuesta estándar
+    y la clasifica como tautología, contradicción o contingencia.
+    Además muestra la tabla de verdad.
+    """
+    print("\n=== Clasificador de Proposiciones Compuestas ===")
+    print("Elija una proposición:")
+    print("1 - p ∨ ¬p")
+    print("2 - p ∧ ¬p")
+    print("3 - p ⇒ q")
+
+    opcion = input("Opción: ")
+
+    if opcion == "1":
+        nombre = "p ∨ ¬p"
+        def formula(p, q):
+            p_bool = bool(p)
+            return int(p_bool or (not p_bool))  # q no se usa
+    elif opcion == "2":
+        nombre = "p ∧ ¬p"
+        def formula(p, q):
+            p_bool = bool(p)
+            return int(p_bool and (not p_bool))  # q no se usa
+    elif opcion == "3":
+        nombre = "p ⇒ q"
+        def formula(p, q):
+            p_bool = bool(p)
+            q_bool = bool(q)
+            return int((not p_bool) or q_bool)
+    else:
+        print("Opción inválida.")
+        return
+
+    print(f"\nTabla de verdad para: {nombre}")
+    print("-------------------------------------")
+    print("|  p  |  q  |  ", nombre, " |")
+    print("-------------------------------------")
+
+    resultados = []
+
+    for p in (0, 1):
+        for q in (0, 1):
+            r = formula(p, q)
+            resultados.append(r)
+            print(f"|  {p}  |  {q}  |      {r}       |")
+
+    print("-------------------------------------")
+
+    # Clasificación
+    if all(r == 1 for r in resultados):
+        print("Clasificación: TAUTOLOGÍA (siempre verdadera).")
+    elif all(r == 0 for r in resultados):
+        print("Clasificación: CONTRADICCIÓN (siempre falsa).")
+    else:
+        print("Clasificación: CONTINGENCIA (verdadera en algunas filas y falsa en otras).")

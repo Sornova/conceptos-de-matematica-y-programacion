@@ -20,6 +20,8 @@ menu_opciones = print(
     "\n 8 Juego de Adivinanza en Binario"
     "\n 9 Circuito Combinacional Basico"
     "\n 10 Evaluador de Implicaciones y Contrarreciprocas"
+    "\n 11 Generador Doble Implicacion"
+    "\n 12 Clasificador de Proposiciones Compuestas"
 
     )
 
@@ -330,9 +332,106 @@ while True:
         else:
             print("Respuesta incorrecta")
 
+    elif opcion == 9:
+
+        print("\n=== Circuito Combinacional Básico (Par / Impar) ===")
+        print("Este circuito decide si un número es PAR o IMPAR según su último bit en binario.\n")
+
+        tipo = input("¿Cómo querés ingresar el número?\n 1 - En decimal\n 2 - En binario\n ---> ")
+
+        if tipo == "1":
+            decimal = int(input("Ingrese un número decimal no negativo: "))
+            if decimal < 0:
+                print("Solo se aceptan números no negativos.")
+                continue
+            bin_str = numero_binario(decimal)
+
+        elif tipo == "2":
+            bin_str = input("Ingrese el número en binario (solo 0 y 1): ")
+            try:
+                validar_binario_str(bin_str)
+            except ValueError as e:
+                print("Error:", e)
+                continue
+
+            decimal = int(bin_str, 2)
+
+        else:
+            print("Opción inválida.")
+            continue
+
+        par = es_par_binario(bin_str)
+        impar = es_impar_binario(bin_str)
+
+        print(f"\nNúmero decimal: {decimal}")
+        print(f"Número binario: {bin_str}")
+
+        if par == 1:
+            print("Resultado del circuito: EL NÚMERO ES PAR (último bit = 0).")
+        else:
+            print("Resultado del circuito: EL NÚMERO ES IMPAR (último bit = 1).")
+
+
+    elif opcion == 10:
+
+            print("\n=== Evaluador de Implicaciones y Contrarrecíprocas ===")
+
+            p_usuario = int(input("Ingrese valor de p (0 o 1): "))
+            q_usuario = int(input("Ingrese valor de q (0 o 1): "))
+
+            # Normalizamos a booleanos
+            p_bool = bool(p_usuario)
+            q_bool = bool(q_usuario)
+
+            # p ⇒ q  es equivalente a  (not p) or q
+            imp_usuario = (not p_bool) or q_bool
+
+            # ¬q ⇒ ¬p  es equivalente a  (not (not q)) or (not p) = q or (not p)
+            contra_usuario = q_bool or (not p_bool)
+
+            print(f"\nPara p = {p_usuario}, q = {q_usuario}:")
+            print(f"p ⇒ q        = {int(imp_usuario)}")
+            print(f"¬q ⇒ ¬p      = {int(contra_usuario)}")
+
+            # Ahora generamos la tabla de verdad completa
+            print("\nTabla de verdad de p ⇒ q y ¬q ⇒ ¬p:")
+            print("-------------------------------------------")
+            print("|  p  |  q  |  p⇒q  |  ¬q⇒¬p  |")
+            print("-------------------------------------------")
+
+            equivalentes = True
+
+            for p in (0, 1):
+                for q in (0, 1):
+                    p_b = bool(p)
+                    q_b = bool(q)
+
+                    imp = (not p_b) or q_b          # p ⇒ q
+                    contra = q_b or (not p_b)       # ¬q ⇒ ¬p
+
+                    if imp != contra:
+                        equivalentes = False
+
+                    print(f"|  {p}  |  {q}  |   {int(imp)}   |    {int(contra)}    |")
+
+            print("-------------------------------------------")
+
+            if equivalentes:
+                print("Conclusión: p⇒q y ¬q⇒¬p son lógicamente equivalentes.")
+            else:
+                print("Conclusión: p⇒q y ¬q⇒¬p NO son lógicamente equivalentes.")
+
+
+    elif opcion == 11:
+        tabla_doble_implicacion()
+
+    elif opcion == 12:
+        clasificar_proposicion_compuesta()
+
     else:
         break
 
+    
 
 
 
